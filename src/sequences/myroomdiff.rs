@@ -11,7 +11,7 @@ pub struct MyRoomDifficultySequence {
 impl MyRoomDifficultySequence {
     pub fn change_difficulty(sequence: &Self ) {
         unsafe {
-            myds_change_difficulty(&sequence, None);
+            myds_change_difficulty(sequence, None);
         }
     }
 }

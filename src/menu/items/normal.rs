@@ -19,11 +19,11 @@ impl BasicMenuItemMethods for NormalMenuItem {
         if !this.is_attribute_disable() {
             let current = difficulty_to_string(GameUserData::get_difficulty(false));
             let text = format!(
-                "{}: {}\n{}: {}", 
-                Mess::get("MID_Hub_Bed_Difficulty_Change_Before").to_string(), 
+                "{}: {}\n\n{}: {}", 
+                Mess::get("MID_Hub_Bed_Difficulty_Change_Before"), 
                 current, 
-                Mess::get("MID_Hub_Bed_Difficulty_Change_After").to_string(), 
-                Mess::get("MID_SYS_Difficulty_Normal").to_string()
+                Mess::get("MID_Hub_Bed_Difficulty_Change_After"), 
+                Mess::get("MID_SYS_Difficulty_Normal")
             );
             YesNoDialog::bind::<NormalConfirmDialog>(
                 this.menu, 

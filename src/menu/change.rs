@@ -2,10 +2,6 @@ use engage::{fade::Fade, menu::MenuSequence, proc::{desc::ProcDesc, ProcInst}};
 
 pub struct DifficultyChangeSequence;
 
-impl DifficultyChangeSequence {
-    
-}
-
 impl MenuSequence for DifficultyChangeSequence {
     fn get_proc_desc(_this: &'static ProcInst) -> Vec<&'static mut ProcDesc> {
         vec![

@@ -1,6 +1,6 @@
 use std::vec;
 use engage::{
-    menu::{content::shoptopmenu, BasicMenu, BasicMenuItem, BasicMenuItemMethods, BasicMenuMethods, MenuSequence}, 
+    menu::{content::shoptopmenu, BasicMenu, BasicMenuItem, BasicMenuMethods, MenuSequence}, 
     mess::Mess, 
     proc::{desc::ProcDesc, Bindable, ProcBoolMethod, ProcInst, ProcVoidMethod}, 
     resourcemanager, 
@@ -19,13 +19,6 @@ enum DifficultyMenuSequenceLabel {
 }
 
 impl MenuSequence for DifficultyMenuSequence {
-    fn bind(parent: &impl Bindable) {
-        let proc = ProcInst::instantiate().unwrap();
-        let descs = Il2CppArray::from_slice(Self::get_proc_desc(proc)).unwrap();
-
-        proc.create_bind(parent, descs, Self::proc_name());
-    }
-
     fn get_proc_desc(this: &'static ProcInst) -> Vec<&'static mut ProcDesc> {
         vec![
             ProcDesc::label(DifficultyMenuSequenceLabel::Start as _),
@@ -53,23 +46,19 @@ impl DifficultyMenuSequence {
         // Create a List<BasicMenuItem> for the BasicMenu
         // SystemList is used because otherwise infer errors happen, idk
         let menu_item_list_class = get_generic_class!(SystemList<BasicMenuItem>).unwrap();
-        let menu_item_list = il2cpp::instantiate_class::<List<BasicMenuItem>>(&menu_item_list_class).unwrap();
+        let menu_item_list = il2cpp::instantiate_class::<List<BasicMenuItem>>(menu_item_list_class).unwrap();
 
         // Create a item list with a capacity of 3
         menu_item_list.items = Il2CppArray::new(3).unwrap(); 
 
         // Adding the menu items, build_attributes is used to disable buttons when we don't want them selectable, can also hide them entirely
         let normal_menu_item = BasicMenuItem::new_impl::<NormalMenuItem>();
-        normal_menu_item.get_class_mut().get_virtual_method_mut("BuildAttribute").map(|method| method.method_ptr =  NormalMenuItem::build_attributes as _);
-
         menu_item_list.add(normal_menu_item);
 
         let hard_menu_item = BasicMenuItem::new_impl::<HardMenuItem>();
-        hard_menu_item.get_class_mut().get_virtual_method_mut("BuildAttribute").map(|method| method.method_ptr =  HardMenuItem::build_attributes as _);
         menu_item_list.add(hard_menu_item);
         
         let luantic_menu_item = BasicMenuItem::new_impl::<LunaticMenuItem>();
-        luantic_menu_item.get_class_mut().get_virtual_method_mut("BuildAttribute").map(|method| method.method_ptr =  LunaticMenuItem::build_attributes as _);
         menu_item_list.add(luantic_menu_item);
 
         // Create a BasicMenu and fill it with our item list

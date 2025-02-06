@@ -1,4 +1,4 @@
-use engage::{menu::{BasicMenu, BasicMenuFields}, mess::Mess};
+use engage::mess::Mess;
 use unity::prelude::*;
 
 use crate::sequences::myroomdiff::MyRoomDifficultySequence;
@@ -15,11 +15,12 @@ pub fn update_difficulty(current: i32, next: i32) {
 
 // Converting the int to a localized string so we can make text for the dialogs
 pub fn difficulty_to_string(difficulty: i32) -> String {
-    match difficulty {
-        0 => Mess::get("MID_SYS_Difficulty_Normal"),
-        1 => Mess::get("MID_SYS_Difficulty_Hard"),
-        2 => Mess::get("MID_SYS_Difficulty_Lunatic"),
-        _ => Mess::get("MID_SYS_None")
-    }.to_string()
+    let mid = match difficulty {
+        0 => "MID_SYS_Difficulty_Normal",
+        1 => "MID_SYS_Difficulty_Hard",
+        2 => "MID_SYS_Difficulty_Lunatic",
+        _ => "MID_SYS_None"
+    };
+    Mess::get(mid).to_string()
 }
 
